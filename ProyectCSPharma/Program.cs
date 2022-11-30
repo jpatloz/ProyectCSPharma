@@ -1,12 +1,22 @@
 using CsPharmaDAL.Modelo;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
+using ProyectCSPharma.Areas.Identity.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
 builder.Services.AddDbContext<CspharmaInformacionalContext>(
     o => o.UseNpgsql(builder.Configuration.GetConnectionString("EFCConexion")));
+
+builder.Services.AddDbContext<LoginRegisterContext>(
+    o => o.UseNpgsql(builder.Configuration.GetConnectionString("EFCConexion")));
+
+
+builder.Services.AddDefaultIdentity<UserAuthentication>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddEntityFrameworkStores<LoginRegisterContext>();
 
 var app = builder.Build();
 
@@ -18,6 +28,7 @@ if (!app.Environment.IsDevelopment())
 app.UseStaticFiles();
 
 app.UseRouting();
+app.UseAuthentication();;
 
 app.UseAuthorization();
 
