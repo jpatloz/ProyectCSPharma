@@ -18,6 +18,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using ProyectCSPharma.Areas.Identity.Data;
 
 namespace ProyectCSPharma.Areas.Identity.Pages.Account
 {
@@ -70,6 +71,16 @@ namespace ProyectCSPharma.Areas.Identity.Pages.Account
         /// </summary>
         public class InputModel
         {
+
+            [Required]
+            [StringLength(255, ErrorMessage = "El campo del nombre tiene un máximo de 255 caracteres")]
+            [Display(Name = "Nombre")]
+            public string Nombre { get; set; }
+
+            [Required]
+            [StringLength(255, ErrorMessage = "El campo de apellidos tiene un máximo de 255 caracteres")]
+            [Display(Name = "Apellidos")]
+            public string Apellidos { get; set; }
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
@@ -113,6 +124,8 @@ namespace ProyectCSPharma.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 var user = CreateUser();
+
+                
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
@@ -158,12 +171,12 @@ namespace ProyectCSPharma.Areas.Identity.Pages.Account
         {
             try
             {
-                return Activator.CreateInstance<IdentityUser>();
+                return Activator.CreateInstance<ApplicationUser>();
             }
             catch
             {
                 throw new InvalidOperationException($"Can't create an instance of '{nameof(IdentityUser)}'. " +
-                    $"Ensure that '{nameof(IdentityUser)}' is not an abstract class and has a parameterless constructor, or alternatively " +
+                    $"Ensure that '{nameof(ApplicationUser)}' is not an abstract class and has a parameterless constructor, or alternatively " +
                     $"override the register page in /Areas/Identity/Pages/Account/Register.cshtml");
             }
         }

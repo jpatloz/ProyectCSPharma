@@ -14,8 +14,7 @@ builder.Services.AddDbContext<CspharmaInformacionalContext>(
 builder.Services.AddDbContext<LoginRegisterContext>(
     o => o.UseNpgsql(builder.Configuration.GetConnectionString("EFCConexion")));
 
-
-builder.Services.AddDefaultIdentity<UserAuthentication>(options => options.SignIn.RequireConfirmedAccount = true)
+builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<LoginRegisterContext>();
 
 var app = builder.Build();
@@ -35,5 +34,7 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+app.MapRazorPages();
 
 app.Run();

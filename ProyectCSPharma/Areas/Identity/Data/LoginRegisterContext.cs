@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace ProyectCSPharma.Areas.Identity.Data;
 
-public class LoginRegisterContext : IdentityDbContext<UserAuthentication>
+public class LoginRegisterContext : IdentityDbContext<ApplicationUser>
 {
     public LoginRegisterContext(DbContextOptions<LoginRegisterContext> options)
         : base(options)
@@ -15,24 +15,19 @@ public class LoginRegisterContext : IdentityDbContext<UserAuthentication>
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
-        // Customize the ASP.NET Identity model and override the defaults if needed.
-        // For example, you can rename the ASP.NET Identity table names and more.
-        // Add your customizations after calling base.OnModelCreating(builder);
-
-
         builder.ApplyConfiguration(new UserEntityConfiguration());
 
         builder.HasDefaultSchema("dlk_torrecontrol");
 
-        // builder.Entity<IdentityUser>().ToTable("Dlk_cat_acc_empleados");
+        builder.Entity<IdentityUser>().ToTable("Dlk_cat_acc_empleados");
     }
 }
 
-public class UserEntityConfiguration : IEntityTypeConfiguration<UserAuthentication>
+public class UserEntityConfiguration : IEntityTypeConfiguration<ApplicationUser>
 {
-    public void Configure(EntityTypeBuilder<UserAuthentication> builder)
+    public void Configure(EntityTypeBuilder<ApplicationUser> builder)
     {
-        builder.Property(usuario => usuario.UsuarioNombre).HasMaxLength(255);
-        builder.Property(usuario => usuario.UsuarioApellidos).HasMaxLength(255);
+        builder.Property(usuario => usuario.Nombre).HasMaxLength(255);
+        builder.Property(usuario => usuario.Apellidos).HasMaxLength(255);
     }
 }
